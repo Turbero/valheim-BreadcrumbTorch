@@ -50,36 +50,7 @@ namespace BreadcrumbTorch
                     return;
                 }
 
-                Vector3 position;
-                if (ConfigurationFile.torchSpawnPosition.Value == TorchSpawnPosition.Crosshair)
-                {
-                    Vector3 ray = GameCamera.instance.transform.forward;
-                    bool raycastOk = Physics.Raycast(GameCamera.instance.transform.position, ray, out RaycastHit hit, 10f);
-                    bool tooCloseToWall = Vector3.Dot(hit.normal, Vector3.up) < 0.5f;
-                    Logger.Log($"RaycastOk {raycastOk}, tooCloseToWall {tooCloseToWall}");
-                    if (raycastOk && !tooCloseToWall)
-                    {
-                        position = hit.point;
-                        position += hit.normal * 0.05f; //Avoid floating
-                        position += Vector3.up * ConfigurationFile.torchHeightOffset.Value; // Vertical offset
-
-                        // Align to ground if on terrain
-                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("terrain"))
-                        {
-                            position.y = ZoneSystem.instance.GetGroundHeight(position);
-                        }
-                    }
-                    else
-                    {
-                        Logger.Log("Raycast didn't work out or too close to wall. Spawning on player");
-                        position = __instance.transform.position + Vector3.up * ConfigurationFile.torchHeightOffset.Value;
-                    }
-                }
-                else
-                {
-                    position = __instance.transform.position + Vector3.up * ConfigurationFile.torchHeightOffset.Value;
-                }
-
+                Vector3 position = __instance.transform.position + Vector3.up * ConfigurationFile.torchHeightOffset.Value;
                 Logger.Log("Spawning torch");
                 ZRoutedRpc.instance.InvokeRoutedRPC("RPC_SpawnBreadcrumbTorch", position);
             }

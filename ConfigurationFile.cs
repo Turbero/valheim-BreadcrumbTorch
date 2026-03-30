@@ -7,12 +7,6 @@ using UnityEngine;
 
 namespace BreadcrumbTorch
 {
-    public enum TorchSpawnPosition
-    {
-        Crosshair,
-        Player
-    }
-    
     public enum TorchPlacement
     {
         Anywhere,
@@ -26,7 +20,6 @@ namespace BreadcrumbTorch
         
         public static ConfigEntry<bool> debug;
         public static ConfigEntry<KeyCode> torchSpawnKey;
-        public static ConfigEntry<TorchSpawnPosition> torchSpawnPosition; 
         public static ConfigEntry<string> torchPieceName;
         public static ConfigEntry<TorchPlacement> torchPlacement;
         public static ConfigEntry<float> torchHeightOffset;
@@ -50,12 +43,11 @@ namespace BreadcrumbTorch
                 _serverConfigLocked = config("1 - General", "Lock Configuration", true, "If on, the configuration is locked and can be changed by server admins only.");
                 _ = ConfigSync.AddLockingConfigEntry(_serverConfigLocked);
                 debug = config("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)", false);
+                torchSpawnKey = config("1 - General", "Spawn Key", KeyCode.U, "Key to spawn (default = U)", false);
                 
-                torchSpawnKey = config("2 - Client options", "Torch Spawn Key", KeyCode.U, "Key to spawn torch (default = U)", false);
-                torchSpawnPosition = config("2 - Client options", "Torch Spawn Position", TorchSpawnPosition.Player, "Position where the torch will spawn (default = Player)", false);
-                torchPieceName = config("3 - Forced options", "Torch Prefab Name", "piece_groundtorch_green", "Piece to be spawned");
-                torchPlacement = config("3 - Forced options", "Torch Placement", TorchPlacement.Anywhere, "Placement where to allow to place a breadcrumb torch");
-                torchHeightOffset = config("3 - Forced options", "Torch Height Offset", 0.4f, "Small height correction to the spawned item on the ground");
+                torchPieceName = config("2 - Spawn Options", "Prefab Name", "piece_groundtorch_green", "Piece to be spawned");
+                torchPlacement = config("2 - Spawn Options", "Placement", TorchPlacement.Anywhere, "Placement where it is only allowed to spawn");
+                torchHeightOffset = config("2 - Spawn Options", "Height Offset", 0.4f, "Small height correction to the spawned item on wthe ground");
                     
                 SetupWatcher();
             }
