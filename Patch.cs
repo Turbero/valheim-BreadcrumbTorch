@@ -19,6 +19,11 @@ namespace BreadcrumbTorch
             if (prefab == null) return;
 
             var go = Object.Instantiate(prefab, position, Quaternion.identity);
+            if (ConfigurationFile.torchCharacterCollision.Value)
+            {
+                foreach (var col in go.GetComponentsInChildren<Collider>())
+                    Physics.IgnoreLayerCollision(col.gameObject.layer, LayerMask.NameToLayer("character"), true);
+            }
 
             var znetView = go.GetComponent<ZNetView>();
             if (znetView != null)

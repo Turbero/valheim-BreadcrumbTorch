@@ -23,6 +23,7 @@ namespace BreadcrumbTorch
         public static ConfigEntry<string> torchPieceName;
         public static ConfigEntry<TorchPlacement> torchPlacement;
         public static ConfigEntry<float> torchHeightOffset;
+        public static ConfigEntry<bool> torchCharacterCollision;
         
         private static ConfigFile configFile;
         private static readonly string ConfigFileName = BreadcrumbTorch.GUID + ".cfg";
@@ -39,7 +40,6 @@ namespace BreadcrumbTorch
         {
             {
                 configFile = plugin.Config;
-
                 _serverConfigLocked = config("1 - General", "Lock Configuration", true, "If on, the configuration is locked and can be changed by server admins only.");
                 _ = ConfigSync.AddLockingConfigEntry(_serverConfigLocked);
                 debug = config("1 - General", "DebugMode", false, "Enabling/Disabling the debugging in the console (default = false)", false);
@@ -47,8 +47,8 @@ namespace BreadcrumbTorch
                 
                 torchPieceName = config("2 - Spawn Options", "Prefab Name", "piece_groundtorch_green", "Piece to be spawned");
                 torchPlacement = config("2 - Spawn Options", "Placement", TorchPlacement.Anywhere, "Placement where it is only allowed to spawn");
-                torchHeightOffset = config("2 - Spawn Options", "Height Offset", 0.4f, "Small height correction to the spawned item on wthe ground");
-                    
+                torchHeightOffset = config("2 - Spawn Options", "Height Offset", 0.4f, "Small height correction to the spawned item on the ground");
+                torchCharacterCollision = config("2 - Spawn Options", "Character Collision", true, "If on, characters will go through the spawned item without collision");
                 SetupWatcher();
             }
         }
