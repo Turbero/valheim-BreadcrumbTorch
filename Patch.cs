@@ -1,5 +1,6 @@
 using System;
 using HarmonyLib;
+using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -7,6 +8,7 @@ namespace BreadcrumbTorch
 {
     [HarmonyPatch(typeof(Game), "Start")]
     public class GameStartPatch {
+        [UsedImplicitly]
         private static void Prefix() {
             ZRoutedRpc.instance.Register("RPC_SpawnBreadcrumbTorch", new Action<long, Vector3>(RPC_SpawnBreadcrumbTorch));
         }
@@ -19,10 +21,10 @@ namespace BreadcrumbTorch
             if (prefab == null) return;
 
             var go = Object.Instantiate(prefab, position, Quaternion.identity);
-            var znetView = go.GetComponent<ZNetView>();
-            if (znetView != null)
+            var zNetView = go.GetComponent<ZNetView>();
+            if (zNetView != null)
             {
-                var zdo = znetView.GetZDO();
+                var zdo = zNetView.GetZDO();
                 zdo.Set(ZDOVars.s_creator, sender);
                 zdo.Set("breadcrumbTorch", true);
             }
