@@ -1,4 +1,6 @@
+using System.Collections;
 using HarmonyLib;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace BreadcrumbTorch
@@ -6,12 +8,13 @@ namespace BreadcrumbTorch
     [HarmonyPatch(typeof(Fireplace), "Start")]
     public static class Fireplace_Start_Patch
     {
+        [UsedImplicitly]
         public static void Postfix(Fireplace __instance)
         {
             if (ZNet.instance != null && ZNet.instance.IsServer())
                 return;
 
-            float value = ConfigurationFile.firePlaceVolume.Value / 100f;
+            var value = ConfigurationFile.firePlaceVolume.Value / 100f;
             foreach (var audio in __instance.GetComponentsInChildren<AudioSource>())
                 audio.minDistance = value;
         }
@@ -19,10 +22,26 @@ namespace BreadcrumbTorch
         public static void UpdateAllFireplaces()
         {
             var pieces = Object.FindObjectsByType<Fireplace>(FindObjectsSortMode.None);
-            float value = ConfigurationFile.firePlaceVolume.Value / 100f;
+            var value = ConfigurationFile.firePlaceVolume.Value / 100f;
             foreach (var firePlace in pieces)
                 foreach (var audio in firePlace.GetComponentsInChildren<AudioSource>())
                     audio.minDistance = value;
+        }
+    }
+    
+    [HarmonyPatch(typeof(Player), "OnSpawned")]
+    public static class Player_OnSpawned_Patch
+    {
+        [UsedImplicitly]
+        public static void Postfix(Player __instance)
+        {
+            __instance.StartCoroutine(ApplyFireplaceVolumeDelayed());
+        }
+
+        private static IEnumerator ApplyFireplaceVolumeDelayed()
+        {
+            yield return new WaitForSeconds(1f);
+            Fireplace_Start_Patch.UpdateAllFireplaces();
         }
     }
 }
