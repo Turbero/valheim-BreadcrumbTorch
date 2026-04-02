@@ -30,7 +30,7 @@ namespace BreadcrumbTorch
     }
     
     [HarmonyPatch(typeof(Player), "OnSpawned")]
-    public static class Player_OnSpawned_Patch
+    public static class Player_OnSpawned_Sound_Patch
     {
         [UsedImplicitly]
         public static void Postfix(Player __instance)

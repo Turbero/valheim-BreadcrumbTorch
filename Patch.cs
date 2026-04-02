@@ -166,4 +166,17 @@ namespace BreadcrumbTorch
             return true;
         }
     }
+    
+    [HarmonyPatch(typeof(Player), "OnSpawned")]
+    public static class Player_OnSpawned_Collision_Patch
+    {
+        [UsedImplicitly]
+        public static void Postfix(Player __instance)
+        {
+            var pieces = Object.FindObjectsByType<Piece>(FindObjectsSortMode.None);
+            foreach (var piece in pieces)
+                foreach (var col in piece.GetComponentsInChildren<Collider>())
+                    Physics.IgnoreLayerCollision(col.gameObject.layer, LayerMask.NameToLayer("character"), false);
+        }
+    }
 }
