@@ -1,5 +1,11 @@
 ### CHANGELOG
 
+## 1.0.2
+
+* Added option to control audio volume of all fire places
+* Fixed collision with spawned items that were provoking conflicts with other pieces
+* Fixed spawning item with console or chat opened
+
 ## 1.0.1
 
 * Added option to go through spawned items without collision (default = true)
