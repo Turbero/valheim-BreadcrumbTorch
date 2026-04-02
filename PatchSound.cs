@@ -11,7 +11,7 @@ namespace BreadcrumbTorch
             if (ZNet.instance != null && ZNet.instance.IsServer())
                 return;
 
-            float value = ConfigurationFile.fireVolume.Value / 100f;
+            float value = ConfigurationFile.firePlaceVolume.Value / 100f;
             foreach (var audio in __instance.GetComponentsInChildren<AudioSource>())
                 audio.minDistance = value;
         }
@@ -19,7 +19,7 @@ namespace BreadcrumbTorch
         public static void UpdateAllFireplaces()
         {
             var pieces = Object.FindObjectsByType<Fireplace>(FindObjectsSortMode.None);
-            float value = ConfigurationFile.fireVolume.Value / 100f;
+            float value = ConfigurationFile.firePlaceVolume.Value / 100f;
             foreach (var firePlace in pieces)
                 foreach (var audio in firePlace.GetComponentsInChildren<AudioSource>())
                     audio.minDistance = value;
