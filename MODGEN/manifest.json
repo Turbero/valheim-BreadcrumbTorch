@@ -1,6 +1,6 @@
 {
     "name": "BreadcrumbTorch",
-    "version_number": "1.0.2",
+    "version_number": "1.0.3",
     "website_url": "https://github.com/Turbero/valheim-BreadcrumbTorch",
     "description": "< Commissioned Mod > Press hotkey to spawn a configurable torch on player's spot to not get lost in big dungeons or areas. It doesn't drop items when removed. Select the game torch and the areas where it is possible to spawn it.",
     "dependencies": [

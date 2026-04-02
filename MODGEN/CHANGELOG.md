@@ -1,5 +1,9 @@
 ### CHANGELOG
 
+## 1.0.3
+
+* Restoring accidental "ghost effect" of existing pieces around spawned items caused by v1.0.1
+
 ## 1.0.2
 
 * Added option to control audio volume of all fire places
