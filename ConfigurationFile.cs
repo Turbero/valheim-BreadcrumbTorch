@@ -23,7 +23,8 @@ namespace BreadcrumbTorch
         public static ConfigEntry<string> torchPieceName;
         public static ConfigEntry<TorchPlacement> torchPlacement;
         public static ConfigEntry<float> torchHeightOffset;
-        public static ConfigEntry<bool> torchCharacterCollision;
+        public static ConfigEntry<bool> torchDisableCharacterCollision;
+        public static ConfigEntry<int> fireVolume;
         
         private static ConfigFile configFile;
         private static readonly string ConfigFileName = BreadcrumbTorch.GUID + ".cfg";
@@ -48,7 +49,9 @@ namespace BreadcrumbTorch
                 torchPieceName = config("2 - Spawn Options", "Prefab Name", "piece_groundtorch_green", "Piece to be spawned");
                 torchPlacement = config("2 - Spawn Options", "Placement", TorchPlacement.Anywhere, "Placement where it is only allowed to spawn");
                 torchHeightOffset = config("2 - Spawn Options", "Height Offset", 0.4f, "Small height correction to the spawned item on the ground");
-                torchCharacterCollision = config("2 - Spawn Options", "Character Collision", true, "If on, characters will go through the spawned item without collision");
+                torchDisableCharacterCollision = config("2 - Spawn Options", "Disable Character Collision", true, "If on, characters will go through the spawned item without collision");
+                
+                fireVolume  = config("3 - Sound Options", "Audio Volume", 71, new ConfigDescription("Sound volume for the fire sound from multiple items like torches, fire camps, etc", new AcceptableValueRange<int>(0, 100)));
                 SetupWatcher();
             }
         }
@@ -82,7 +85,8 @@ namespace BreadcrumbTorch
 
         private static void SettingsChanged(object sender, EventArgs e)
         {
-            
+            GameStartPatch.UpdateAllTorchCollisions();
+            Fireplace_Start_Patch.UpdateAllFireplaces();
         }
 
         private static ConfigEntry<T> config<T>(string group, string name, T value, string description,
