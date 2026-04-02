@@ -19,18 +19,64 @@ namespace BreadcrumbTorch
             if (prefab == null) return;
 
             var go = Object.Instantiate(prefab, position, Quaternion.identity);
-            if (ConfigurationFile.torchCharacterCollision.Value)
-            {
-                foreach (var col in go.GetComponentsInChildren<Collider>())
-                    Physics.IgnoreLayerCollision(col.gameObject.layer, LayerMask.NameToLayer("character"), true);
-            }
-
             var znetView = go.GetComponent<ZNetView>();
             if (znetView != null)
             {
                 var zdo = znetView.GetZDO();
                 zdo.Set(ZDOVars.s_creator, sender);
                 zdo.Set("breadcrumbTorch", true);
+            }
+            if (ConfigurationFile.torchDisableCharacterCollision.Value)
+                ApplyNoCollisionWithPlayers(go);
+        }
+        
+        private static void ApplyNoCollisionWithPlayers(GameObject go)
+        {
+            var torchColliders = go.GetComponentsInChildren<Collider>();
+            var players = Player.GetAllPlayers();
+
+            foreach (var player in players)
+            {
+                var playerColliders = player.GetComponentsInChildren<Collider>();
+                foreach (var tCol in torchColliders)
+                {
+                    foreach (var pCol in playerColliders)
+                    {
+                        Physics.IgnoreCollision(tCol, pCol, true);
+                    }
+                }
+            }
+        }
+        
+        public static void UpdateAllTorchCollisions()
+        {
+            var ignore = ConfigurationFile.torchDisableCharacterCollision.Value;
+
+            var pieces = Object.FindObjectsByType<Piece>(FindObjectsSortMode.None);
+            var players = Player.GetAllPlayers();
+
+            foreach (var piece in pieces)
+            {
+                var zNetView = piece.GetComponent<ZNetView>();
+                if (zNetView == null || !zNetView.IsValid()) continue;
+
+                var zdo = zNetView.GetZDO();
+                if (zdo == null || !zdo.GetBool("breadcrumbTorch")) continue;
+
+                var torchColliders = piece.GetComponentsInChildren<Collider>();
+
+                foreach (var player in players)
+                {
+                    var playerColliders = player.GetComponentsInChildren<Collider>();
+
+                    foreach (var tCol in torchColliders)
+                    {
+                        foreach (var pCol in playerColliders)
+                        {
+                            Physics.IgnoreCollision(tCol, pCol, ignore);
+                        }
+                    }
+                }
             }
         }
     }
@@ -66,7 +112,9 @@ namespace BreadcrumbTorch
             return player.CanMove() &&
                    !player.IsSwimming() &&
                    !InventoryGui.IsVisible() &&
-                   !Game.IsPaused();
+                   !Game.IsPaused() &&
+                   !Console.IsVisible() &&
+                   !Chat.instance.IsChatDialogWindowVisible();
         }
     }
 
@@ -77,10 +125,10 @@ namespace BreadcrumbTorch
         {
             if (piece == null) return true;
 
-            var znetView = piece.GetComponent<ZNetView>();
-            if (znetView == null || !znetView.IsValid()) return true;
+            var zNetView = piece.GetComponent<ZNetView>();
+            if (zNetView == null || !zNetView.IsValid()) return true;
 
-            var zdo = znetView.GetZDO();
+            var zdo = zNetView.GetZDO();
             if (zdo != null && zdo.GetBool("breadcrumbTorch"))
             {
                 Logger.Log("breadcrumbTorch piece detected.");
@@ -99,10 +147,10 @@ namespace BreadcrumbTorch
         {
             if (__instance == null) return true;
             
-            var znetView = __instance.gameObject.GetComponent<ZNetView>();
-            if (znetView == null || !znetView.IsValid()) return true;
+            var zNetView = __instance.gameObject.GetComponent<ZNetView>();
+            if (zNetView == null || !zNetView.IsValid()) return true;
 
-            var zdo = znetView.GetZDO();
+            var zdo = zNetView.GetZDO();
             if (zdo != null && zdo.GetBool("breadcrumbTorch"))
             {
                 Logger.Log("Skipping drops for breadcrumbTorch");
