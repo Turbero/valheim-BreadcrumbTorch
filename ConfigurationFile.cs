@@ -24,7 +24,7 @@ namespace BreadcrumbTorch
         public static ConfigEntry<TorchPlacement> torchPlacement;
         public static ConfigEntry<float> torchHeightOffset;
         public static ConfigEntry<bool> torchDisableCharacterCollision;
-        public static ConfigEntry<int> fireVolume;
+        public static ConfigEntry<int> firePlaceVolume;
         
         private static ConfigFile configFile;
         private static readonly string ConfigFileName = BreadcrumbTorch.GUID + ".cfg";
@@ -51,7 +51,7 @@ namespace BreadcrumbTorch
                 torchHeightOffset = config("2 - Spawn Options", "Height Offset", 0.4f, "Small height correction to the spawned item on the ground");
                 torchDisableCharacterCollision = config("2 - Spawn Options", "Disable Character Collision", true, "If on, characters will go through the spawned item without collision");
                 
-                fireVolume  = config("3 - Sound Options", "Audio Volume", 71, new ConfigDescription("Sound volume for the fire sound from multiple items like torches, fire camps, etc", new AcceptableValueRange<int>(0, 100)));
+                firePlaceVolume = config("3 - Sound Options", "Fire Places Audio Volume", 100, new ConfigDescription("Sound volume for the fire sound from multiple items like torches, fire camps, etc", new AcceptableValueRange<int>(0, 100)));
                 SetupWatcher();
             }
         }
