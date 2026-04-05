@@ -1,8 +1,12 @@
 ### CHANGELOG
 
+## 1.0.4
+
+* Force "ghost effect off" in all world pieces by running command "/force_ghost_off_from_all_pieces" instead of being run when player spawns
+
 ## 1.0.3
 
-* Restoring accidental "ghost effect" of existing pieces around spawned items caused by v1.0.1
+* Patching random "ghost effect" of existing pieces around spawned items caused by v1.0.1
 
 ## 1.0.2
 
