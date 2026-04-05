@@ -25,14 +25,14 @@ namespace BreadcrumbTorch
         {
             var toPrint = $"{BreadcrumbTorch.NAME} {BreadcrumbTorch.VERSION}: {(s != null ? s.ToString() : "null")}";
 
-            Debug.LogWarning(toPrint);
+            logger.LogWarning(toPrint);
         }
 
         internal static void LogError(object s)
         {
             var toPrint = $"{BreadcrumbTorch.NAME} {BreadcrumbTorch.VERSION}: {(s != null ? s.ToString() : "null")}";
 
-            Debug.LogError(toPrint);
+            logger.LogError(toPrint);
         }
     }
 }
