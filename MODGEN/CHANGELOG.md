@@ -1,5 +1,10 @@
 ### CHANGELOG
 
+## 1.0.5
+
+* Blocked spawning torches in no build areas ("A mystical force in this area stops you")
+* Fix on title screen to avoid generating red error messages in console
+
 ## 1.0.4
 
 * Force "ghost effect off" in all world pieces by running command "/force_ghost_off_from_all_pieces" instead of being run when player spawns
