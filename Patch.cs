@@ -104,6 +104,11 @@ namespace BreadcrumbTorch
                 }
 
                 Vector3 position = __instance.transform.position + Vector3.up * ConfigurationFile.torchHeightOffset.Value;
+                if (Location.IsInsideNoBuildLocation(position))
+                {
+                    MessageHud.instance.ShowMessage(MessageHud.MessageType.Center, Localization.instance.Localize("$msg_nobuildzone"));
+                    return;
+                }
                 Logger.Log("Spawning torch");
                 ZRoutedRpc.instance.InvokeRoutedRPC("RPC_SpawnBreadcrumbTorch", position);
             }
@@ -114,9 +119,9 @@ namespace BreadcrumbTorch
             return player.CanMove() &&
                    !player.IsSwimming() &&
                    !InventoryGui.IsVisible() &&
-                   !Game.IsPaused() &&
+                   ZNet.instance && !Game.IsPaused() &&
                    !Console.IsVisible() &&
-                   !Chat.instance.IsChatDialogWindowVisible();
+                   Chat.instance && !Chat.instance.IsChatDialogWindowVisible();
         }
     }
 
