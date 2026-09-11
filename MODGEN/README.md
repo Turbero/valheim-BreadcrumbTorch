@@ -1,7 +1,5 @@
 # Breadcrumb Torch
 
-< Commissioned mod >
-
 Breadcrumb Torch will allow players to spawn a torch of their choice to help them not get lost in big dungeons or areas.
 
 These torches can be broken at any time and won't return any drops.
