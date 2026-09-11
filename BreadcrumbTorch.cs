@@ -9,7 +9,7 @@ namespace BreadcrumbTorch
     {
         public const string GUID = "Turbero.BreadcrumbTorch";
         public const string NAME = "Breadcrumb Torch";
-        public const string VERSION = "1.0.5";
+        public const string VERSION = "1.0.6";
 
         private readonly Harmony harmony = new Harmony(GUID);
 

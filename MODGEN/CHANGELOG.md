@@ -1,5 +1,10 @@
 ### CHANGELOG
 
+## 1.0.6
+
+* Recompiled for compatibility with 1.0
+* ServerSync upgrade
+
 ## 1.0.5
 
 * Blocked spawning torches in no build areas ("A mystical force in this area stops you")
